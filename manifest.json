@@ -1,0 +1,15 @@
+{
+	"manifest_version": 2,
+	"name": "Open URLs in Container",
+	"version": "0.0.1",
+	"description": "Open any url (not just those with a specific domain) in a multi-account container",
+	"developer": {
+		"name": "Battlemoose",
+		"url": "mailto:hughblackall@gmail.com"
+	},
+	"default_locale": "en",
+	"permissions": ["tabs", "contextualIdentities", "cookies", "storage"],
+	"background": {
+		"scripts": ["js/background.js"]
+	}
+}
