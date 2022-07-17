@@ -10,6 +10,14 @@
 	"default_locale": "en",
 	"permissions": ["tabs", "contextualIdentities", "cookies", "storage"],
 	"background": {
-		"scripts": ["js/background.js"]
+		"scripts": ["background/tab-updated-listener.js"]
+	},
+	"options_ui": {
+		"page": "settings/settings.html"
+	},
+	"browser_specific_settings": {
+		"gecko": {
+			"id": "{81448a9e-a376-409b-a744-4234b6770e7f}"
+		}
 	}
 }

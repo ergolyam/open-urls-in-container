@@ -1,0 +1,27 @@
+{
+	"name": "open-urls-in-container",
+	"description": "A Firefox extension to open any URL (not just those with a specific domain) in a multi-account container",
+	"repository": "ssh://git@gitlab.com/hughblackall/open-urls-in-container.git",
+	"license": "MIT",
+	"private": "true",
+	"scripts": {
+		"start": "concurrently \"webpack --watch\" \"yarn web-ext run --source-dir build/webpack\"",
+		"watch:webpack": "webpack --watch",
+		"lint": "yarn web-ext lint",
+		"build": "yarn webpack && yarn web-ext build",
+		"build:webpack": "yarn webpack",
+		"clean": "yarn clean:webpack && yarn clean:extension",
+		"clean:webpack": "rm -rf build",
+		"clean:extension": "rm -rf web-ext-artifacts"
+	},
+	"dependencies": {
+		"concurrently": "^7.2.2",
+		"copy-webpack-plugin": "^11.0.0",
+		"html-webpack-plugin": "^5.5.0",
+		"vue": "^3.2.37",
+		"vue-loader": "^17.0.0",
+		"web-ext": "^7.1.1",
+		"webpack": "^5.73.0",
+		"webpack-cli": "^4.10.0"
+	}
+}
