@@ -1,21 +1,9 @@
-// TODO: Add settings and storage - https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Implement_a_settings_page
-
-browser.tabs.onCreated.addListener(() => {
-	console.log('onCreated')
-})
-
 browser.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
-	// console.log('---- onUpdated ----')
-	// console.log('tab', tab)
-	// console.log('changeInfo', changeInfo)
-
 	if (changeInfo.status == 'loading') {
-		const regexMap = [
-			{ pattern: 'bitbucket.org/barrenjoeytech', containerId: 'firefox-container-1' },
-		]
-
-		// const cookieStores = await browser.cookies.getAllCookieStores()
-		// console.log('cookieStores', cookieStores)
+		const {
+			urls: regexMap,
+			preferences: { closeExistingTab },
+		} = await browser.storage.sync.get({ urls: [], preferences: {} })
 
 		const url = tab.url
 
@@ -26,11 +14,15 @@ browser.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
 			return matches
 		}, [])
 
-		// console.log('urlsMatched', urlsMatched)
-		// console.log('tab.cookieStoreId', tab.cookieStoreId)
-		if (urlsMatched.length > 0 && tab.cookieStoreId == 'firefox-default') {
-			// console.log('Do it!')
-			browser.tabs.remove(tab.id)
+		if (
+			urlsMatched.length > 0 &&
+			tab.cookieStoreId === 'firefox-default' &&
+			tab.active === true
+		) {
+			console.debug('URLs matched:', urlsMatched)
+			if (closeExistingTab) {
+				browser.tabs.remove(tab.id)
+			}
 			browser.tabs.create({
 				url,
 				cookieStoreId: urlsMatched[0].containerId,
