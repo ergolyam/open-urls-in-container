@@ -20,9 +20,7 @@ browser.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
 			tab.active === true
 		) {
 			console.debug('URLs matched:', urlsMatched)
-			if (closeExistingTab) {
-				browser.tabs.remove(tab.id)
-			}
+			browser.tabs.remove(tab.id)
 			browser.tabs.create({
 				url,
 				cookieStoreId: urlsMatched[0].containerId,

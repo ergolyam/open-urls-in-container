@@ -22,12 +22,6 @@
 		<button @click="save">Save</button>
 		<button @click="addUrl">+</button>
 	</div>
-	<div class="row">
-		<label
-			><input type="checkbox" v-model="preferences.closeExistingTab" /> Close existing
-			tab</label
-		>
-	</div>
 </template>
 
 <script>
