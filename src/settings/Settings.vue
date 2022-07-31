@@ -6,11 +6,11 @@
 		<div class="col">
 			<label
 				>Container:
-				<select v-model="url.containerId">
+				<select v-model="url.containerName">
 					<option
 						v-for="container in contextualIdentities"
 						:key="container.cookieStoreId"
-						:value="container.cookieStoreId"
+						:value="container.name"
 					>
 						{{ container.name }}
 					</option>
@@ -37,7 +37,7 @@ export default {
 		}
 	},
 	async mounted() {
-		console.log('Load storage:', await browser.storage.sync.get({ urls: [] }))
+		console.debug('Load storage:', await browser.storage.sync.get({ urls: [] }))
 		const { urls, preferences } = await browser.storage.sync.get({ urls: [], preferences: {} })
 		this.urls = urls
 		this.preferences = preferences
@@ -52,19 +52,23 @@ export default {
 			this.urls.push({
 				id: uuid(),
 				pattern: '',
-				containerId: this.contextualIdentities[0].cookieStoreId,
+				// Use name as assumed unique container identifier, as this is how the Multi-Account
+				// Containers extension handles uniqueness when syncing
+				// See https://github.com/mozilla/multi-account-containers/blob/e5fa98d69e317b52b7ab107545f8ffdeb7b753a5/src/js/background/sync.js#L329
+				containerName: this.contextualIdentities[0].name,
 			})
 		},
 		save() {
 			console.debug('Save URLs:', toRaw(this.urls))
 			console.debug('Save Preferences:', toRaw(this.preferences))
+			// TODO: If any URL patterns are empty, remove them
 			browser.storage.sync.set({
 				urls: toRaw(this.urls),
 				preferences: toRaw(this.preferences),
 			})
 		},
 		syncStorage(changes) {
-			console.log('Storage updated:', changes)
+			console.debug('Storage updated:', changes)
 			if (changes.urls) {
 				this.urls = changes.urls.newValue
 			}
@@ -72,6 +76,7 @@ export default {
 				this.preferences = changes.preferences.newValue
 			}
 		},
+		// TODO: add function to remove urls
 	},
 }
 </script>

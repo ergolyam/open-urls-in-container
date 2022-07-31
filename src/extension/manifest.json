@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "Open URLs in Container",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"description": "Open any URL (not just those with a specific domain) in a multi-account container",
 	"developer": {
 		"name": "Battlemoose",
