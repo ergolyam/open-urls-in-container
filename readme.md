@@ -6,11 +6,17 @@ The extension consists of a [settings page](https://developer.mozilla.org/en-US/
 
 Firefox's [Multi-Account Containers](https://support.mozilla.org/kb/containers) extension provides similar functionality out of the box, but only allows for matching URLs based on a domain. This extension allows for regex matching against the whole URL as opposed to exact matches based on domain.
 
-## Prerequisite
+## Installation
 
-Development on, or building of, this extension requires [Node.js](https://nodejs.org) v16+, and [Yarn](https://yarnpkg.com/getting-started) or [npm](https://docs.npmjs.com/).
+This extension can be installed at [addons.mozilla.org](https://addons.mozilla.org/firefox/addon/open-urls-in-container/).
 
-## Development
+## Contributing
+
+### Prerequisites
+
+Development on, or building of, this extension requires Firefox, [Node.js](https://nodejs.org) v16+, and [Yarn](https://yarnpkg.com/getting-started) or [npm](https://docs.npmjs.com/). Older versions of Node will probably work, they just haven't been tested.
+
+### Development
 
 To load the extension in a development instance of Firefox with automatic reloading enabled, run:
 
@@ -19,7 +25,7 @@ yarn install
 yarn start
 ```
 
-## Building
+### Building
 
 To build and package the extension for distribution, run:
 
