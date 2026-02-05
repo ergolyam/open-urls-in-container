@@ -8,7 +8,7 @@ browser.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
 		const url = tab.url
 
 		const urlsMatched = regexMap.reduce((matches, current) => {
-			if (url.match(current.pattern)) {
+			if (typeof current.pattern === 'string' && url.includes(current.pattern)) {
 				matches.push(current)
 			}
 			return matches
