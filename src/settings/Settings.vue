@@ -13,7 +13,7 @@
 						<input
 							type="text"
 							v-model="newPattern"
-							placeholder="*.example.com/*"
+							:placeholder="newPatternPlaceholder"
 						/>
 					</label>
 					<label class="field">
@@ -47,7 +47,7 @@
 							<input
 								type="text"
 								v-model="url.pattern"
-								placeholder="*.example.com/*"
+								placeholder="example.com"
 								readonly
 							/>
 						</label>
@@ -89,11 +89,22 @@ export default {
 			preferences: {},
 			newPattern: '',
 			newContainerName: '',
+			currentTabUrl: '',
 		}
 	},
 	computed: {
 		canAdd() {
-			return this.newPattern.trim().length > 0 && this.newContainerName.length > 0
+			return this.effectivePattern.length > 0 && this.newContainerName.length > 0
+		},
+		effectivePattern() {
+			const trimmed = this.newPattern.trim()
+			if (trimmed.length > 0) {
+				return trimmed
+			}
+			return this.currentTabUrl
+		},
+		newPatternPlaceholder() {
+			return this.currentTabUrl || 'example.com'
 		},
 		reversedUrls() {
 			return [...this.urls].reverse()
@@ -109,18 +120,36 @@ export default {
 		if (!this.newContainerName && this.contextualIdentities.length > 0) {
 			this.newContainerName = this.contextualIdentities[0].name
 		}
+		await this.loadCurrentTabUrl()
 	},
 	unmounted() {
 		browser.storage.sync.onChanged.removeListener(this.syncStorage)
 	},
 	methods: {
+		async loadCurrentTabUrl() {
+			try {
+				const tabs = await browser.tabs.query({ active: true, currentWindow: true })
+				if (!tabs || tabs.length === 0) {
+					return
+				}
+				const url = tabs[0].url || ''
+				if (this.isUsableUrl(url)) {
+					this.currentTabUrl = url
+				}
+			} catch (error) {
+				console.debug('Failed to read current tab URL:', error)
+			}
+		},
+		isUsableUrl(url) {
+			return typeof url === 'string' && (url.startsWith('http://') || url.startsWith('https://'))
+		},
 		addUrl() {
 			if (!this.canAdd) {
 				return
 			}
 			this.urls.push({
 				id: uuid(),
-				pattern: this.newPattern.trim(),
+				pattern: this.effectivePattern,
 				// Use name as assumed unique container identifier, as this is how the Multi-Account
 				// Containers extension handles uniqueness when syncing
 				// See https://github.com/mozilla/multi-account-containers/blob/e5fa98d69e317b52b7ab107545f8ffdeb7b753a5/src/js/background/sync.js#L329
