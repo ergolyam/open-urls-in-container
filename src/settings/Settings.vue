@@ -6,42 +6,7 @@
 		</header>
 
 		<section class="cbi-section">
-			<div class="cbi-section-title">
-				<span>Rules</span>
-			</div>
-
 			<div class="cbi-dynlist" data-dynlist>
-				<div v-if="urls.length === 0" class="empty-state">No rules yet.</div>
-
-				<div class="item" v-for="(url, index) in urls" :key="url.id">
-					<div class="item-fields">
-						<label class="field">
-							<span class="field-label">Domain pattern</span>
-							<input
-								type="text"
-								v-model="url.pattern"
-								placeholder="*.example.com/*"
-								readonly
-							/>
-						</label>
-						<label class="field">
-							<span class="field-label">Container</span>
-							<select v-model="url.containerName">
-								<option
-									v-for="container in contextualIdentities"
-									:key="container.cookieStoreId"
-									:value="container.name"
-								>
-									{{ container.name }}
-								</option>
-							</select>
-						</label>
-					</div>
-					<button class="cbi-button cbi-button-remove" type="button" @click="removeUrl(index)">
-						Delete
-					</button>
-				</div>
-
 				<div class="add-item">
 					<label class="field">
 						<span class="field-label">Domain pattern</span>
@@ -70,6 +35,37 @@
 						:disabled="!canAdd"
 					>
 						Add
+					</button>
+				</div>
+
+				<div v-if="urls.length === 0" class="empty-state">No rules yet.</div>
+
+				<div class="item" v-for="(url, index) in urls" :key="url.id">
+					<div class="item-fields">
+						<label class="field">
+							<span class="field-label">Domain pattern</span>
+							<input
+								type="text"
+								v-model="url.pattern"
+								placeholder="*.example.com/*"
+								readonly
+							/>
+						</label>
+						<label class="field">
+							<span class="field-label">Container</span>
+							<select v-model="url.containerName">
+								<option
+									v-for="container in contextualIdentities"
+									:key="container.cookieStoreId"
+									:value="container.name"
+								>
+									{{ container.name }}
+								</option>
+							</select>
+						</label>
+					</div>
+					<button class="cbi-button cbi-button-remove" type="button" @click="removeUrl(index)">
+						Delete
 					</button>
 				</div>
 			</div>
@@ -350,8 +346,8 @@ input[readonly] {
 	grid-template-columns: 1fr 1fr auto;
 	gap: 10px;
 	align-items: end;
-	padding-top: 6px;
-	border-top: 1px dashed var(--panel-border);
+	padding-bottom: 6px;
+	border-bottom: 1px dashed var(--panel-border);
 }
 
 .actions {
