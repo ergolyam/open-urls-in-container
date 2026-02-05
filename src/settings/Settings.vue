@@ -40,7 +40,7 @@
 
 				<div v-if="urls.length === 0" class="empty-state">No rules yet.</div>
 
-				<div class="item" v-for="(url, index) in urls" :key="url.id">
+				<div class="item" v-for="url in reversedUrls" :key="url.id">
 					<div class="item-fields">
 						<label class="field">
 							<span class="field-label">Domain pattern</span>
@@ -64,7 +64,7 @@
 							</select>
 						</label>
 					</div>
-					<button class="cbi-button cbi-button-remove" type="button" @click="removeUrl(index)">
+					<button class="cbi-button cbi-button-remove" type="button" @click="removeUrl(url.id)">
 						Delete
 					</button>
 				</div>
@@ -94,6 +94,9 @@ export default {
 	computed: {
 		canAdd() {
 			return this.newPattern.trim().length > 0 && this.newContainerName.length > 0
+		},
+		reversedUrls() {
+			return [...this.urls].reverse()
 		},
 	},
 	async mounted() {
@@ -125,8 +128,8 @@ export default {
 			})
 			this.newPattern = ''
 		},
-		removeUrl(index) {
-			this.urls.splice(index, 1)
+		removeUrl(id) {
+			this.urls = this.urls.filter((url) => url.id !== id)
 		},
 		async save() {
 			console.debug('Save URLs:', toRaw(this.urls))
