@@ -10,22 +10,15 @@ Firefox's [Multi-Account Containers](https://support.mozilla.org/kb/containers) 
 
 ## Installation
 
-This extension can be installed at [addons.mozilla.org](https://addons.mozilla.org/firefox/addon/open-urls-in-container/).
+Original: [addons.mozilla.org](https://addons.mozilla.org/firefox/addon/open-urls-in-container/)
+
+Fork (this repo): [addons.mozilla.org](https://addons.mozilla.org/firefox/addon/open-urls-in-container-fork)
 
 ## Contributing
 
 ### Prerequisites
 
 Development on, or building of, this extension requires Firefox, [Node.js](https://nodejs.org) v16+, and [Yarn](https://yarnpkg.com/getting-started) or [npm](https://docs.npmjs.com/). Older versions of Node will probably work, they just haven't been tested.
-
-### Development
-
-To load the extension in a development instance of Firefox with automatic reloading enabled, run:
-
-```
-yarn install
-yarn start
-```
 
 ### Building
 
