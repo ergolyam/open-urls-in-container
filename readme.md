@@ -1,5 +1,7 @@
 # open-urls-in-container
 
+> This project is a fork of this repository: [open-urls-in-container](https://gitlab.com/hughblackall/open-urls-in-container)
+
 open-urls-in-container is a [Firefox](https://www.mozilla.org/firefox/) extension to open any URL (not just those with a specific domain) in a multi-account container.
 
 The extension consists of a [settings page](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Implement_a_settings_page) (`src/settings/`) built with [Vue.js](https://vuejs.org/), and a [background script]() (`src/background/`). The settings page allows users to define regex patterns that, when matched against a URL loaded in the browser, will open that URL in a specified container tab. The background script listens for update events in browser tabs and performs the regex matching and opening of container tabs.
