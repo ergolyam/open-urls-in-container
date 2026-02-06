@@ -86,7 +86,6 @@ export default {
 		return {
 			urls: [],
 			contextualIdentities: [],
-			preferences: {},
 			newPattern: '',
 			newContainerName: '',
 			currentTabUrl: '',
@@ -112,9 +111,8 @@ export default {
 	},
 	async mounted() {
 		console.debug('Load storage:', await browser.storage.sync.get({ urls: [] }))
-		const { urls, preferences } = await browser.storage.sync.get({ urls: [], preferences: {} })
+		const { urls } = await browser.storage.sync.get({ urls: [] })
 		this.urls = urls
-		this.preferences = preferences
 		browser.storage.sync.onChanged.addListener(this.syncStorage)
 		this.contextualIdentities = await browser.contextualIdentities.query({})
 		if (!this.newContainerName && this.contextualIdentities.length > 0) {
@@ -162,11 +160,9 @@ export default {
 		},
 		async save() {
 			console.debug('Save URLs:', toRaw(this.urls))
-			console.debug('Save Preferences:', toRaw(this.preferences))
 			// TODO: If any URL patterns are empty, remove them
 			await browser.storage.sync.set({
 				urls: toRaw(this.urls),
-				preferences: toRaw(this.preferences),
 			})
 			if (typeof window !== 'undefined' && window.close) {
 				window.close()
@@ -176,9 +172,6 @@ export default {
 			console.debug('Storage updated:', changes)
 			if (changes.urls) {
 				this.urls = changes.urls.newValue
-			}
-			if (changes.preferences) {
-				this.preferences = changes.preferences.newValue
 			}
 		},
 	},

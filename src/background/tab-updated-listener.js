@@ -1,9 +1,6 @@
 browser.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
 	if (changeInfo.status == 'loading') {
-		const {
-			urls: regexMap,
-			preferences: { closeExistingTab },
-		} = await browser.storage.sync.get({ urls: [], preferences: {} })
+		const { urls: regexMap } = await browser.storage.sync.get({ urls: [] })
 
 		const url = tab.url
 
@@ -30,11 +27,15 @@ browser.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
 			const cookieStoreId = container[0].cookieStoreId
 
 			if (cookieStoreId && typeof cookieStoreId === 'string') {
-				browser.tabs.remove(tab.id)
-				browser.tabs.create({
+				const createdTab = await browser.tabs.create({
 					url,
 					cookieStoreId,
+					windowId: tab.windowId,
+					openerTabId: tab.id,
+					index: tab.index + 1,
+					active: tab.active,
 				})
+				await browser.tabs.remove(tab.id)
 			} else {
 				console.debug(`Not replacing tab. cookieStoreId was '${cookieStoreId}'.`)
 			}
