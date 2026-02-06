@@ -4,6 +4,7 @@ const { VueLoaderPlugin } = require('vue-loader')
 const CopyPlugin = require('copy-webpack-plugin')
 
 module.exports = {
+	mode: 'production',
 	entry: {
 		settings: './src/settings/settings.js',
 	},

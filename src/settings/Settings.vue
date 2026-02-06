@@ -175,19 +175,12 @@ export default {
 
 <style lang="scss" scoped>
 :global(:root) {
-	--panel-main-bright: #0060df;
-	--panel-main-dark: #054096;
 	--panel-secondary-bright: #fbfbfe;
-	--panel-secondary-dark: #f0f0f4;
 	--panel-danger: #e22850;
 	--panel-danger-hover: #c50042;
-	--panel-danger-active: #810220;
 	--panel-success: #0060df;
-	--panel-action: #0060df;
 	--panel-action-hover: #0250bb;
-	--panel-action-active: #054096;
 	--panel-border: #e0e0e6;
-	--panel-border-strong: #8f8f9d;
 	--panel-text: #15141a;
 	--panel-muted: #4a4a4f;
 	--panel-bg: #ffffff;
@@ -198,7 +191,6 @@ export default {
 	--panel-shadow: rgba(0, 0, 0, 0.12);
 	--panel-button-bg: #f0f0f4;
 	--panel-button-hover: #e0e0e6;
-	--panel-button-active: #cfcfd8;
 	--panel-focus: #0060df;
 }
 
@@ -222,45 +214,21 @@ export default {
 		--panel-input-border: #8f8f9d;
 		--panel-shadow: rgba(0, 0, 0, 0.45);
 		--panel-secondary-bright: #2b2a33;
-		--panel-secondary-dark: #15141a;
-		--panel-action: #00ddff;
 		--panel-action-hover: #80ebff;
-		--panel-action-active: #aaf2ff;
 		--panel-success: #00ddff;
 		--panel-button-bg: #2b2a33;
 		--panel-button-hover: #52525e;
-		--panel-button-active: #5b5b66;
 		--panel-focus: #00ddff;
 		--panel-danger: #ff8480;
 		--panel-danger-hover: #ffbdc5;
-		--panel-danger-active: #ffdfe7;
-	}
+}
 }
 
 .panel {
-	padding: 10px 14px;
+	padding: 0px 0px 10px;
 	display: flex;
 	flex-direction: column;
 	gap: 12px;
-	padding-bottom: 10px;
-}
-
-.panel-header {
-	background: transparent;
-	color: var(--panel-text);
-	padding: 12px 14px;
-	border-radius: 4px;
-	box-shadow: none;
-}
-
-.panel-title {
-	font-weight: bold;
-	font-size: 16px;
-}
-
-.panel-subtitle {
-	font-size: 12px;
-	opacity: 0.9;
 }
 
 .cbi-section {
@@ -269,15 +237,6 @@ export default {
 	border-radius: 4px;
 	box-shadow: none;
 	padding: 12px;
-}
-
-.cbi-section-title {
-	display: flex;
-	align-items: center;
-	gap: 8px;
-	font-weight: bold;
-	color: var(--panel-text);
-	margin-bottom: 10px;
 }
 
 .cbi-dynlist {
@@ -294,7 +253,7 @@ export default {
 .cbi-dynlist > .item {
 	background: var(--panel-item-bg);
 	padding: 10px;
-	border: 1px outset var(--panel-input-border);
+	border: none;
 	border-radius: 3px;
 	display: grid;
 	gap: 10px;
@@ -399,11 +358,6 @@ select:focus {
 	color: var(--panel-secondary-bright);
 }
 
-.cbi-button-save.important {
-	background: var(--panel-success);
-	color: var(--panel-secondary-bright);
-}
-
 .cbi-button-save:hover {
 	background: var(--panel-action-hover);
 	border-color: var(--panel-action-hover);
@@ -430,18 +384,14 @@ select:focus {
 	bottom: 0;
 	z-index: 1;
 	background: transparent;
-	padding: 4px 0 4px;
-	margin-top: 0;
+	padding: 0 12px 2px;
+	margin-top: -12px;
 	isolation: isolate;
 }
 
 .actions .cbi-button {
 	z-index: 1;
 	box-shadow: 0 5px 8px -7px var(--panel-shadow);
-}
-
-.actions::after {
-	content: none;
 }
 
 .empty-state {
