@@ -1,10 +1,5 @@
 <template>
 	<div class="panel">
-		<header class="panel-header">
-			<div class="panel-title">Container URL Rules</div>
-			<div class="panel-subtitle">Match URL patterns to containers.</div>
-		</header>
-
 		<section class="cbi-section">
 			<div class="cbi-dynlist" data-dynlist>
 				<div class="add-item">
@@ -180,48 +175,70 @@ export default {
 
 <style lang="scss" scoped>
 :global(:root) {
-	--panel-main-bright: #00b5e2;
-	--panel-main-dark: #002b49;
-	--panel-secondary-bright: #ffffff;
-	--panel-secondary-dark: #212322;
-	--panel-danger: #cc1111;
-	--panel-success: #5cb85c;
-	--panel-action: #37c;
-	--panel-border: #aaa;
-	--panel-border-strong: #000;
-	--panel-text: #212322;
-	--panel-muted: #444;
+	--panel-main-bright: #0060df;
+	--panel-main-dark: #054096;
+	--panel-secondary-bright: #fbfbfe;
+	--panel-secondary-dark: #f0f0f4;
+	--panel-danger: #e22850;
+	--panel-danger-hover: #c50042;
+	--panel-danger-active: #810220;
+	--panel-success: #0060df;
+	--panel-action: #0060df;
+	--panel-action-hover: #0250bb;
+	--panel-action-active: #054096;
+	--panel-border: #e0e0e6;
+	--panel-border-strong: #8f8f9d;
+	--panel-text: #15141a;
+	--panel-muted: #4a4a4f;
 	--panel-bg: #ffffff;
-	--panel-panel-bg: #f7f7f7;
-	--panel-item-bg: #eeeeec;
+	--panel-panel-bg: #ffffff;
+	--panel-item-bg: #f0f0f4;
 	--panel-input-bg: #ffffff;
-	--panel-input-border: #000;
-	--panel-shadow: rgba(0, 0, 0, 0.15);
+	--panel-input-border: #8f8f9d;
+	--panel-shadow: rgba(0, 0, 0, 0.12);
+	--panel-button-bg: #f0f0f4;
+	--panel-button-hover: #e0e0e6;
+	--panel-button-active: #cfcfd8;
+	--panel-focus: #0060df;
 }
 
 :global(body) {
 	margin: 0;
 	background: var(--panel-bg);
 	color: var(--panel-text);
-	font-family: "Helvetica", "Arial", sans-serif;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+		Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 	min-width: 360px;
 }
 
 @media (prefers-color-scheme: dark) {
 	:global(:root) {
-		--panel-text: var(--panel-secondary-bright);
-		--panel-muted: #cdd5db;
-		--panel-bg: var(--panel-main-dark);
-		--panel-panel-bg: var(--panel-secondary-dark);
-		--panel-item-bg: var(--panel-secondary-dark);
-		--panel-input-bg: var(--panel-main-dark);
-		--panel-input-border: var(--panel-main-bright);
-		--panel-shadow: rgba(0, 0, 0, 0.4);
+		--panel-text: #fbfbfe;
+		--panel-muted: #b1b1b3;
+		--panel-bg: #42404c;
+		--panel-panel-bg: #42414d;
+		--panel-item-bg: #2b2a33;
+		--panel-input-bg: #2b2a33;
+		--panel-input-border: #8f8f9d;
+		--panel-shadow: rgba(0, 0, 0, 0.45);
+		--panel-secondary-bright: #2b2a33;
+		--panel-secondary-dark: #15141a;
+		--panel-action: #00ddff;
+		--panel-action-hover: #80ebff;
+		--panel-action-active: #aaf2ff;
+		--panel-success: #00ddff;
+		--panel-button-bg: #2b2a33;
+		--panel-button-hover: #52525e;
+		--panel-button-active: #5b5b66;
+		--panel-focus: #00ddff;
+		--panel-danger: #ff8480;
+		--panel-danger-hover: #ffbdc5;
+		--panel-danger-active: #ffdfe7;
 	}
 }
 
 .panel {
-	padding: 14px;
+	padding: 10px 14px;
 	display: flex;
 	flex-direction: column;
 	gap: 12px;
@@ -229,11 +246,11 @@ export default {
 }
 
 .panel-header {
-	background: linear-gradient(90deg, var(--panel-main-bright), #67c8ea);
-	color: var(--panel-secondary-bright);
+	background: transparent;
+	color: var(--panel-text);
 	padding: 12px 14px;
 	border-radius: 4px;
-	box-shadow: inset 0 0 1px var(--panel-main-dark);
+	box-shadow: none;
 }
 
 .panel-title {
@@ -248,9 +265,9 @@ export default {
 
 .cbi-section {
 	background: var(--panel-panel-bg);
-	border: 1px solid var(--panel-border);
+	border: none;
 	border-radius: 4px;
-	box-shadow: 0 1px 2px var(--panel-shadow);
+	box-shadow: none;
 	padding: 12px;
 }
 
@@ -308,8 +325,8 @@ export default {
 
 input[type='text'],
 select {
-	border: 1px outset var(--panel-input-border);
-	border-radius: 3px;
+	border: 1px solid var(--panel-input-border);
+	border-radius: 4px;
 	padding: 6px 8px;
 	background: var(--panel-input-bg);
 	color: var(--panel-text);
@@ -323,11 +340,18 @@ input[readonly] {
 	cursor: default;
 }
 
+input[type='text']:focus,
+select:focus {
+	border-color: var(--panel-focus);
+	box-shadow: 0 0 0 1px var(--panel-focus);
+	outline: none;
+}
+
 .cbi-button {
 	border: 1px solid var(--panel-border);
-	border-radius: 3px;
+	border-radius: 4px;
 	padding: 6px 10px;
-	background: var(--panel-secondary-bright);
+	background: var(--panel-button-bg);
 	color: var(--panel-text);
 	font-size: 12px;
 	font-weight: bold;
@@ -336,7 +360,8 @@ input[readonly] {
 }
 
 .cbi-button:hover {
-	box-shadow: 0 0 3px var(--panel-action);
+	background: var(--panel-button-hover);
+	border-color: var(--panel-button-hover);
 }
 
 .cbi-button[disabled] {
@@ -347,23 +372,46 @@ input[readonly] {
 
 .cbi-button-add {
 	border-color: var(--panel-success);
-	color: var(--panel-success);
+	background: var(--panel-success);
+	color: var(--panel-secondary-bright);
+}
+
+.cbi-button-add:hover {
+	background: var(--panel-action-hover);
+	border-color: var(--panel-action-hover);
 }
 
 .cbi-button-remove {
 	border-color: var(--panel-danger);
-	color: var(--panel-danger);
+	background: var(--panel-danger);
+	color: var(--panel-secondary-bright);
 	width: 100%;
+}
+
+.cbi-button-remove:hover {
+	background: var(--panel-danger-hover);
+	border-color: var(--panel-danger-hover);
 }
 
 .cbi-button-save {
 	border-color: var(--panel-success);
-	color: var(--panel-success);
+	background: var(--panel-success);
+	color: var(--panel-secondary-bright);
 }
 
 .cbi-button-save.important {
 	background: var(--panel-success);
 	color: var(--panel-secondary-bright);
+}
+
+.cbi-button-save:hover {
+	background: var(--panel-action-hover);
+	border-color: var(--panel-action-hover);
+}
+
+.cbi-button:focus {
+	outline: 2px solid var(--panel-focus);
+	outline-offset: 2px;
 }
 
 .add-item {
@@ -393,14 +441,7 @@ input[readonly] {
 }
 
 .actions::after {
-	content: '';
-	position: absolute;
-	left: -14px;
-	right: -14px;
-	bottom: 0;
-	height: 12px;
-	background: linear-gradient(0deg, var(--panel-bg), transparent);
-	pointer-events: none;
+	content: none;
 }
 
 .empty-state {
