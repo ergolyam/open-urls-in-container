@@ -1,7 +1,7 @@
 <template>
 	<div class="panel">
-		<div v-if="view === 'containers'" class="menu-panel container-picker-panel">
-			<h3 class="title">Manage Containers</h3>
+			<div v-if="view === 'containers'" class="menu-panel container-picker-panel">
+				<h3 class="title"><span class="title-text">Manage Containers</span></h3>
 			<hr>
 			<div class="scrollable identities-list">
 				<table class="menu" id="picker-identities-list">
@@ -34,8 +34,8 @@
 			</div>
 		</div>
 
-			<div v-else class="menu-panel edit-container-assignments">
-				<h3 class="title" id="edit-assignments-title" :title="selectedContainerName">{{ selectedContainerName }}</h3>
+				<div v-else class="menu-panel edit-container-assignments">
+					<h3 class="title"><span class="title-text" :title="selectedContainerName">{{ selectedContainerName }}</span></h3>
 			<button
 				class="btn-return arrow-left controller"
 				type="button"
@@ -311,19 +311,32 @@ export default {
 }
 
 h3.title {
-	block-size: 20px;
+	block-size: 40px;
+	margin: 0;
 	color: var(--text-color-primary);
 	font-family: var(--font-metropolis);
 	font-size: 13px;
 	font-weight: 700;
 	inline-size: 100%;
-	line-height: 20px;
+	line-height: 40px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	text-align: center;
+}
+
+.title-text {
+	display: block;
+	max-inline-size: calc(100% - 88px);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 hr {
 	border: 0;
 	border-block-start: 1px solid var(--panel-separator-color);
+	margin: 0;
 }
 
 .scrollable {
@@ -418,13 +431,6 @@ hr {
 #picker-identities-list .menu-right-float {
 	flex: 0 0 auto;
 	padding-inline-start: 8px;
-}
-
-#edit-assignments-title {
-	padding-inline: 44px 12px;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
 }
 
 .container-count {
@@ -552,7 +558,7 @@ hr {
 	block-size: 32px;
 	inline-size: 32px;
 	cursor: pointer;
-	inset-block-start: 8px;
+	inset-block-start: 4px;
 	inset-inline-start: 8px;
 	position: absolute;
 	z-index: 2;
