@@ -24,9 +24,6 @@
 							<span class="menu-text">{{ container.name }}</span>
 							<span class="menu-right-float">
 								<span class="container-count">{{ container.assignmentCount }}</span>
-								<span class="move-button">
-									<img class="pop-button-image" src="/img/container-move.svg" alt="">
-								</span>
 								<span class="menu-arrow">
 									<img alt="" src="/img/arrow-icon-right.svg">
 								</span>
@@ -293,8 +290,7 @@ export default {
 		--panel-separator-color: rgba(82, 82, 94, 1);
 	}
 
-	:global(.menu-arrow img),
-	:global(.move-button > img) {
+	:global(.menu-arrow img) {
 		filter: invert(0);
 	}
 
@@ -417,18 +413,6 @@ hr {
 	block-size: 24px;
 	inline-size: 12px;
 	opacity: 0.9;
-}
-
-.move-button {
-	cursor: pointer;
-	display: inline-flex;
-	align-items: center;
-	margin-inline-end: 8px;
-}
-
-.move-button > img {
-	block-size: 16px;
-	inline-size: 16px;
 }
 
 .usercontext-icon {
