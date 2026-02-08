@@ -232,6 +232,7 @@ export default {
 	--menu-bg-active-color: #cfcfd8;
 	--panel-bg-color: #fff;
 	--panel-separator-color: rgba(240, 240, 244, 1);
+	--panel-space: 8px;
 }
 
 :global(*) {
@@ -322,6 +323,7 @@ h3.title {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	padding-inline: var(--panel-space);
 	text-align: center;
 }
 
@@ -337,20 +339,21 @@ hr {
 	border: 0;
 	border-block-start: 1px solid var(--panel-separator-color);
 	margin: 0;
+	margin-inline: var(--panel-space);
 }
 
 .scrollable {
 	flex: 1;
 	overflow-y: auto;
 	overflow-x: hidden;
-	padding-block-end: 2px;
+	padding: var(--panel-space);
 }
 
 .menu {
 	border: 0;
 	border-spacing: 0;
 	inline-size: 100%;
-	padding: 0 8px 4px;
+	padding: 0;
 }
 
 .menu-item {
@@ -417,6 +420,7 @@ hr {
 
 #picker-identities-list {
 	table-layout: fixed;
+	margin: 0;
 }
 
 #picker-identities-list td {
@@ -430,7 +434,7 @@ hr {
 
 #picker-identities-list .menu-right-float {
 	flex: 0 0 auto;
-	padding-inline-start: 8px;
+	padding-inline-start: var(--panel-space);
 }
 
 .container-count {
@@ -552,14 +556,14 @@ hr {
 	background-image: var(--icon-arrow-left);
 	background-repeat: no-repeat;
 	background-position: center center;
-	background-color: var(--button-bg-color-secondary);
+	background-color: transparent;
 	border: 0;
 	border-radius: 4px;
 	block-size: 32px;
 	inline-size: 32px;
 	cursor: pointer;
 	inset-block-start: 4px;
-	inset-inline-start: 8px;
+	inset-inline-start: var(--panel-space);
 	position: absolute;
 	z-index: 2;
 }
@@ -568,13 +572,17 @@ hr {
 	background-color: var(--button-bg-hover-color-secondary);
 }
 
+.btn-return.arrow-left:active {
+	background-color: var(--button-bg-active-color-secondary);
+}
+
 .btn-return.arrow-left:focus {
 	outline: 2px solid var(--button-bg-focus-color-primary);
 	outline-offset: 2px;
 }
 
 .assignment-input-wrap {
-	padding: 8px 16px 0;
+	padding: var(--panel-space);
 }
 
 .hide-label {
@@ -636,7 +644,7 @@ input[type='text']:focus {
 }
 
 .edit-sites-assigned {
-	padding-top: 8px;
+	padding-top: 0;
 }
 
 #edit-sites-assigned {
@@ -651,7 +659,7 @@ input[type='text']:focus {
 	color: var(--text-color-primary);
 	block-size: 24px;
 	line-height: 24px;
-	padding-inline: 16px;
+	padding-inline: 0;
 	font-family: var(--font-inter);
 	font-weight: 600;
 }
