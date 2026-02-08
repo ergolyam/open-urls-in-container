@@ -1,7 +1,7 @@
 <template>
 	<div class="panel">
 			<div v-if="view === 'containers'" class="menu-panel">
-				<h3 class="title"><span class="title-text ellipsis">Manage Containers</span></h3>
+				<h3 class="title"><span class="title-text ellipsis">Manage URLs in Containers</span></h3>
 			<hr>
 			<div class="scrollable identities-list">
 				<table class="menu menu--containers" id="picker-identities-list">
