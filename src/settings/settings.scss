@@ -450,6 +450,10 @@ input[type='text']:focus {
 	table-layout: fixed;
 }
 
+.edit-sites-assigned {
+	padding-top: 0;
+}
+
 .sub-header {
 	color: var(--text-color-primary);
 	block-size: 24px;
@@ -457,6 +461,7 @@ input[type='text']:focus {
 	padding-inline: 0;
 	font-family: var(--font-inter);
 	font-weight: 600;
+	margin-block-start: -4px;
 }
 
 .favicon {
