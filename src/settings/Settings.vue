@@ -1,10 +1,10 @@
 <template>
 	<div class="panel">
 			<div v-if="view === 'containers'" class="menu-panel container-picker-panel">
-				<h3 class="title"><span class="title-text">Manage Containers</span></h3>
+				<h3 class="title"><span class="title-text ellipsis">Manage Containers</span></h3>
 			<hr>
 			<div class="scrollable identities-list">
-				<table class="menu" id="picker-identities-list">
+				<table class="menu menu--containers" id="picker-identities-list">
 					<tr
 						v-for="container in containerRows"
 						:key="container.cookieStoreId"
@@ -21,7 +21,9 @@
 									:data-identity-color="container.color"
 								></div>
 							</div>
-							<span class="menu-text" :title="container.name">{{ container.name }}</span>
+							<span class="menu-text menu-text--container ellipsis" :title="tooltipText(container.name, 22)">
+								{{ container.name }}
+							</span>
 							<span class="menu-right-float">
 								<span class="container-count">{{ container.assignmentCount }}</span>
 								<span class="menu-arrow">
@@ -35,7 +37,11 @@
 		</div>
 
 				<div v-else class="menu-panel edit-container-assignments">
-					<h3 class="title"><span class="title-text" :title="selectedContainerName">{{ selectedContainerName }}</span></h3>
+					<h3 class="title" :class="{ 'title--reserve-back': isLikelyTruncated(selectedContainerName, 20) }">
+						<span class="title-text ellipsis" :title="tooltipText(selectedContainerName, 20)">
+							{{ selectedContainerName }}
+						</span>
+					</h3>
 			<button
 				class="btn-return arrow-left controller"
 				type="button"
@@ -61,13 +67,15 @@
 			</div>
 			<div class="scrollable edit-sites-assigned">
 				<div class="sub-header">Sites assigned to this container</div>
-				<table class="menu" id="edit-sites-assigned" :hidden="selectedUrls.length === 0">
+				<table class="menu menu--assignments" id="edit-sites-assigned" :hidden="selectedUrls.length === 0">
 					<tr v-for="url in selectedUrls" :key="url.id" class="menu-item hover-highlight">
 						<td>
 							<div class="favicon">
 								<span class="favicon-dot"></span>
 							</div>
-							<span class="menu-text truncate-text" :title="url.pattern">{{ url.pattern }}</span>
+							<span class="menu-text menu-text--url ellipsis" :title="tooltipText(url.pattern, 36)">
+								{{ url.pattern }}
+							</span>
 							<img
 								title="Delete site assignment"
 								class="trash-button delete-assignment"
@@ -153,6 +161,21 @@ export default {
 		isUsableUrl(url) {
 			return typeof url === 'string' && (url.startsWith('http://') || url.startsWith('https://'))
 		},
+		tooltipText(value, threshold) {
+			if (typeof value !== 'string') {
+				return ''
+			}
+			if (!this.isLikelyTruncated(value, threshold)) {
+				return ''
+			}
+			return value
+		},
+		isLikelyTruncated(value, threshold) {
+			if (typeof value !== 'string') {
+				return false
+			}
+			return typeof threshold === 'number' && threshold > 0 && value.length > threshold
+		},
 		openContainer(containerName) {
 			this.selectedContainerName = containerName
 			this.newPattern = ''
@@ -191,4 +214,3 @@ export default {
 	},
 }
 </script>
-
