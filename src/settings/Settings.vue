@@ -324,7 +324,6 @@ h3.title {
 	align-items: center;
 	justify-content: center;
 	padding-inline: var(--panel-space);
-	text-align: center;
 }
 
 .title-text {
@@ -421,10 +420,6 @@ hr {
 #picker-identities-list {
 	table-layout: fixed;
 	margin: 0;
-}
-
-#picker-identities-list td {
-	min-inline-size: 0;
 }
 
 #picker-identities-list .menu-text {
@@ -643,16 +638,8 @@ input[type='text']:focus {
 	cursor: default;
 }
 
-.edit-sites-assigned {
-	padding-top: 0;
-}
-
 #edit-sites-assigned {
 	table-layout: fixed;
-}
-
-#edit-sites-assigned td {
-	min-inline-size: 0;
 }
 
 .sub-header {
