@@ -242,6 +242,9 @@ export default {
 :global(html) {
 	background: var(--panel-bg-color);
 	font-size: 12px;
+	inline-size: 352px;
+	min-inline-size: 352px;
+	max-inline-size: 352px;
 	block-size: 100%;
 	max-block-size: 650px;
 	min-block-size: 190px;
@@ -712,7 +715,7 @@ input[type='text']:focus {
 .empty-state {
 	color: var(--text-color-primary);
 	opacity: 0.65;
-	padding: 8px 16px;
+	padding: var(--panel-space);
 }
 
 @media (max-width: 360px) {
