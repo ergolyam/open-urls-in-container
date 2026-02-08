@@ -21,7 +21,7 @@
 									:data-identity-color="container.color"
 								></div>
 							</div>
-							<span class="menu-text">{{ container.name }}</span>
+							<span class="menu-text" :title="container.name">{{ container.name }}</span>
 							<span class="menu-right-float">
 								<span class="container-count">{{ container.assignmentCount }}</span>
 								<span class="menu-arrow">
@@ -34,8 +34,8 @@
 			</div>
 		</div>
 
-		<div v-else class="menu-panel edit-container-assignments">
-			<h3 class="title" id="edit-assignments-title">{{ selectedContainerName }}</h3>
+			<div v-else class="menu-panel edit-container-assignments">
+				<h3 class="title" id="edit-assignments-title" :title="selectedContainerName">{{ selectedContainerName }}</h3>
 			<button
 				class="btn-return arrow-left controller"
 				type="button"
@@ -353,6 +353,7 @@ hr {
 	align-items: center;
 	display: flex;
 	inline-size: 100%;
+	min-inline-size: 0;
 	padding-inline: 8px;
 	gap: 0;
 }
@@ -387,6 +388,9 @@ hr {
 	display: block;
 	flex: 1;
 	min-inline-size: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .menu-right-float {
@@ -396,6 +400,31 @@ hr {
 	margin-inline-start: auto;
 	padding-inline-start: 16px;
 	gap: 4px;
+}
+
+#picker-identities-list {
+	table-layout: fixed;
+}
+
+#picker-identities-list td {
+	min-inline-size: 0;
+}
+
+#picker-identities-list .menu-text {
+	flex: 1 1 auto;
+	inline-size: 0;
+}
+
+#picker-identities-list .menu-right-float {
+	flex: 0 0 auto;
+	padding-inline-start: 8px;
+}
+
+#edit-assignments-title {
+	padding-inline: 44px 12px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .container-count {
@@ -604,6 +633,14 @@ input[type='text']:focus {
 	padding-top: 8px;
 }
 
+#edit-sites-assigned {
+	table-layout: fixed;
+}
+
+#edit-sites-assigned td {
+	min-inline-size: 0;
+}
+
 .sub-header {
 	color: var(--text-color-primary);
 	block-size: 24px;
@@ -619,6 +656,7 @@ input[type='text']:focus {
 	justify-content: center;
 	inline-size: 16px;
 	block-size: 16px;
+	flex: 0 0 16px;
 	margin-inline-end: 8px;
 }
 
@@ -631,21 +669,32 @@ input[type='text']:focus {
 }
 
 .truncate-text {
+	display: block;
+	flex: 1 1 auto;
+	inline-size: 0;
+	min-inline-size: 0;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
 
 .trash-button {
-	display: none;
+	display: inline-block;
 	inline-size: 20px;
 	block-size: 20px;
+	flex: 0 0 20px;
 	margin-inline-start: 8px;
+	visibility: hidden;
+	opacity: 0;
+	transition: opacity 0.12s ease-in-out;
+	pointer-events: none;
 }
 
-.menu-item:hover .trash-button,
-.menu-item:focus-within .trash-button {
-	display: inline-block;
+#edit-sites-assigned .menu-item:hover .trash-button,
+#edit-sites-assigned .menu-item:focus-within .trash-button {
+	visibility: visible;
+	opacity: 1;
+	pointer-events: auto;
 }
 
 .delete-assignment {
