@@ -377,17 +377,18 @@ input[type='text']:focus {
 	color: var(--button-text-color-primary);
 }
 
-.button.primary:hover {
+.button.primary:not(:disabled):hover {
 	background: var(--button-bg-hover-color-primary);
 }
 
-.button.primary:active {
+.button.primary:not(:disabled):active {
 	background: var(--button-bg-active-color-primary);
 }
 
 .button.primary:disabled {
 	opacity: 0.5;
 	cursor: default;
+	pointer-events: none;
 }
 
 .edit-sites-assigned {
