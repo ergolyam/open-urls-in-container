@@ -135,15 +135,12 @@ h3.title {
 
 .title-text {
 	display: block;
-	max-inline-size: calc(100% - (var(--control-height) + (var(--space-2) * 3)));
-}
-
-.edit-container-assignments .title.title--reserve-back {
-	padding-inline-start: calc(var(--control-height) + (var(--space-2) * 2));
-}
-
-.edit-container-assignments .title.title--reserve-back .title-text {
 	max-inline-size: 100%;
+}
+
+.edit-container-assignments .title {
+	padding-inline-start: calc(var(--control-height) + (var(--space-2) * 2));
+	padding-inline-end: calc(var(--control-height) + (var(--space-2) * 2));
 }
 
 .ellipsis {

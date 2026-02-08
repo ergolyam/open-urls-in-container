@@ -37,7 +37,7 @@
 		</div>
 
 				<div v-else class="menu-panel edit-container-assignments">
-					<h3 class="title" :class="{ 'title--reserve-back': isLikelyTruncated(selectedContainerName, 20) }">
+					<h3 class="title">
 						<span class="title-text ellipsis" :title="tooltipText(selectedContainerName, 20)">
 							{{ selectedContainerName }}
 						</span>
