@@ -20,7 +20,6 @@
 	--space-1: 4px;
 	--space-2: 8px;
 	--space-3: 12px;
-	--space-4: 16px;
 	--radius-1: 4px;
 
 	--panel-width: 352px;
@@ -40,11 +39,6 @@
 	--button-bg-color-secondary: #f0f0f4;
 	--button-bg-hover-color-secondary: #e0e0e6;
 	--button-bg-active-color-secondary: #cfcfd8;
-	--button-destructive-bg-color: #e22850;
-	--button-destructive-bg-hover-color: #c50042;
-	--button-destructive-bg-active-color: #810220;
-	--button-destructive-bg-focus-color: #e22850;
-	--button-destructive-text-color: #fbfbfe;
 	--input-bg-color: #fff;
 	--input-border-color: #8f8f9d;
 	--input-border-focus-color: #0060df;
@@ -97,11 +91,6 @@ body {
 		--button-bg-color-secondary: #2b2a33;
 		--button-bg-hover-color-secondary: #52525e;
 		--button-bg-active-color-secondary: #5b5b66;
-		--button-destructive-bg-color: #ff8480;
-		--button-destructive-bg-hover-color: #ffbdc5;
-		--button-destructive-bg-active-color: #ffdfe7;
-		--button-destructive-bg-focus-color: #ff8480;
-		--button-destructive-text-color: #15141a;
 		--input-bg-color: #2b2a33;
 		--input-border-color: #8f8f9d;
 		--input-border-focus-color: #0df;
@@ -270,10 +259,6 @@ hr {
 
 .menu--assignments {
 	table-layout: fixed;
-}
-
-.menu--assignments td {
-	min-inline-size: 0;
 }
 
 .menu-text--url {

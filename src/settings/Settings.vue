@@ -1,6 +1,6 @@
 <template>
 	<div class="panel">
-			<div v-if="view === 'containers'" class="menu-panel container-picker-panel">
+			<div v-if="view === 'containers'" class="menu-panel">
 				<h3 class="title"><span class="title-text ellipsis">Manage Containers</span></h3>
 			<hr>
 			<div class="scrollable identities-list">
@@ -21,7 +21,7 @@
 									:data-identity-color="container.color"
 								></div>
 							</div>
-							<span class="menu-text menu-text--container ellipsis" :title="tooltipText(container.name, 22)">
+							<span class="menu-text ellipsis" :title="tooltipText(container.name, 22)">
 								{{ container.name }}
 							</span>
 							<span class="menu-right-float">
