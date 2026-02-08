@@ -243,7 +243,7 @@ export default {
 	font-size: 12px;
 	block-size: 100%;
 	max-block-size: 650px;
-	min-block-size: 300px;
+	min-block-size: 190px;
 }
 
 :global(body) {
@@ -257,7 +257,7 @@ export default {
 	max-inline-size: 352px;
 	block-size: 100%;
 	max-block-size: 650px;
-	min-block-size: 300px;
+	min-block-size: 190px;
 }
 
 :global(#app) {
@@ -291,7 +291,7 @@ export default {
 	}
 
 	:global(.menu-arrow img) {
-		filter: invert(0);
+		filter: invert(1);
 	}
 
 }
@@ -311,13 +311,13 @@ export default {
 }
 
 h3.title {
-	block-size: 48px;
+	block-size: 20px;
 	color: var(--text-color-primary);
 	font-family: var(--font-metropolis);
-	font-size: 14px;
+	font-size: 13px;
 	font-weight: 700;
 	inline-size: 100%;
-	line-height: 48px;
+	line-height: 20px;
 	text-align: center;
 }
 
@@ -330,19 +330,19 @@ hr {
 	flex: 1;
 	overflow-y: auto;
 	overflow-x: hidden;
-	padding-block-end: 8px;
+	padding-block-end: 2px;
 }
 
 .menu {
 	border: 0;
 	border-spacing: 0;
 	inline-size: 100%;
-	padding: 8px;
+	padding: 0 8px 4px;
 }
 
 .menu-item {
 	align-items: center;
-	block-size: 32px;
+	block-size: 30px;
 	border-radius: 4px;
 	cursor: pointer;
 	display: flex;
