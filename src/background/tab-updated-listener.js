@@ -128,17 +128,34 @@ async function removeTabQuietly(tabId, errorMessage) {
 }
 
 async function redirectNavigation(details, navigation) {
-	let tab
 	let assignments
 	try {
-		const navigationState = await Promise.all([
-			browser.tabs.get(details.tabId),
-			loadAssignments(),
-		])
-		tab = navigationState[0]
-		assignments = navigationState[1]
+		assignments = assignmentsLoaded
+			? cachedAssignments
+			: await loadAssignments()
 	} catch (error) {
-		console.debug('Failed to inspect navigation:', error)
+		console.debug('Failed to load URL assignments:', error)
+		return {}
+	}
+
+	if (!isCurrentNavigation(navigation)) {
+		return {}
+	}
+
+	const firstMatch = assignments.find((assignment) => (
+		typeof assignment.pattern === 'string' &&
+		details.url.includes(assignment.pattern)
+	))
+
+	if (!firstMatch || typeof firstMatch.containerName !== 'string') {
+		return {}
+	}
+
+	let tab
+	try {
+		tab = await browser.tabs.get(details.tabId)
+	} catch (error) {
+		console.debug('Failed to inspect matching navigation:', error)
 		return {}
 	}
 
@@ -150,15 +167,6 @@ async function redirectNavigation(details, navigation) {
 		tab.cookieStoreId !== DEFAULT_COOKIE_STORE_ID ||
 		tab.active !== true
 	) {
-		return {}
-	}
-
-	const firstMatch = assignments.find((assignment) => (
-		typeof assignment.pattern === 'string' &&
-		details.url.includes(assignment.pattern)
-	))
-
-	if (!firstMatch || typeof firstMatch.containerName !== 'string') {
 		return {}
 	}
 
