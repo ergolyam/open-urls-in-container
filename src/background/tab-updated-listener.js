@@ -128,20 +128,15 @@ async function removeTabQuietly(tabId, errorMessage) {
 }
 
 async function preserveTabGroup(tabId, groupId) {
-	// tabs.group was added after the extension's minimum Firefox version.
-	// Resolve it dynamically so older versions can keep using the extension.
-	const groupTabs = Reflect.get(browser.tabs, 'group')
-
 	if (
 		typeof groupId !== 'number' ||
-		groupId < 0 ||
-		typeof groupTabs !== 'function'
+		groupId < 0
 	) {
 		return
 	}
 
 	try {
-		await groupTabs.call(browser.tabs, {
+		await browser.tabs.group({
 			groupId,
 			tabIds: tabId,
 		})
