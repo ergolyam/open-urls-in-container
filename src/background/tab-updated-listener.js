@@ -127,6 +127,31 @@ async function removeTabQuietly(tabId, errorMessage) {
 	}
 }
 
+async function preserveTabGroup(tabId, groupId) {
+	// tabs.group was added after the extension's minimum Firefox version.
+	// Resolve it dynamically so older versions can keep using the extension.
+	const groupTabs = Reflect.get(browser.tabs, 'group')
+
+	if (
+		typeof groupId !== 'number' ||
+		groupId < 0 ||
+		typeof groupTabs !== 'function'
+	) {
+		return
+	}
+
+	try {
+		await groupTabs.call(browser.tabs, {
+			groupId,
+			tabIds: tabId,
+		})
+	} catch (error) {
+		// Keep the container redirect working if the group disappeared while
+		// the replacement tab was being created.
+		console.debug('Failed to preserve tab group:', error)
+	}
+}
+
 async function redirectNavigation(details, navigation) {
 	let assignments
 	try {
@@ -163,10 +188,7 @@ async function redirectNavigation(details, navigation) {
 		return {}
 	}
 
-	if (
-		tab.cookieStoreId !== DEFAULT_COOKIE_STORE_ID ||
-		tab.active !== true
-	) {
+	if (tab.cookieStoreId !== DEFAULT_COOKIE_STORE_ID) {
 		return {}
 	}
 
@@ -207,6 +229,19 @@ async function redirectNavigation(details, navigation) {
 		}
 
 		const createdTab = await browser.tabs.create(createProperties)
+
+		if (!isCurrentNavigation(navigation)) {
+			await removeTabQuietly(
+				createdTab.id,
+				'Failed to remove superseded container tab:',
+			)
+			return {}
+		}
+
+		// A replacement created at the boundary of a Firefox tab group can be
+		// placed outside it. Move it explicitly before removing the original,
+		// which may be the group's last remaining tab.
+		await preserveTabGroup(createdTab.id, tab.groupId)
 
 		if (!isCurrentNavigation(navigation)) {
 			await removeTabQuietly(
