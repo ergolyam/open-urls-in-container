@@ -1,44 +1,116 @@
-browser.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
-	if (changeInfo.status == 'loading') {
-		const { urls: regexMap } = await browser.storage.sync.get({ urls: [] })
+const DEFAULT_COOKIE_STORE_ID = 'firefox-default'
+const redirectingTabs = new Set()
 
-		const url = tab.url
+function normalizeAssignments(urls) {
+	return Array.isArray(urls) ? urls : []
+}
 
-		const urlsMatched = regexMap.reduce((matches, current) => {
-			if (typeof current.pattern === 'string' && url.includes(current.pattern)) {
-				matches.push(current)
-			}
-			return matches
-		}, [])
+let assignmentsPromise = browser.storage.sync.get({ urls: [] })
+	.then(({ urls }) => normalizeAssignments(urls))
+	.catch((error) => {
+		console.debug('Failed to load URL assignments:', error)
+		return []
+	})
 
-		if (
-			urlsMatched.length > 0 &&
-			tab.cookieStoreId === 'firefox-default' &&
-			tab.active === true
-		) {
-			console.debug('URLs matched:', urlsMatched)
-			const firstMatch = urlsMatched[0]
-			// Use name as assumed unique container identifier, as this is how the Multi-Account
-			// Containers extension handles uniqueness when syncing
-			// See https://github.com/mozilla/multi-account-containers/blob/e5fa98d69e317b52b7ab107545f8ffdeb7b753a5/src/js/background/sync.js#L329
-			const container = await browser.contextualIdentities.query({
-				name: firstMatch.containerName,
-			})
-			const cookieStoreId = container[0].cookieStoreId
-
-			if (cookieStoreId && typeof cookieStoreId === 'string') {
-				const createdTab = await browser.tabs.create({
-					url,
-					cookieStoreId,
-					windowId: tab.windowId,
-					openerTabId: tab.id,
-					index: tab.index + 1,
-					active: tab.active,
-				})
-				await browser.tabs.remove(tab.id)
-			} else {
-				console.debug(`Not replacing tab. cookieStoreId was '${cookieStoreId}'.`)
-			}
-		}
+browser.storage.sync.onChanged.addListener((changes) => {
+	if (changes.urls) {
+		assignmentsPromise = Promise.resolve(normalizeAssignments(changes.urls.newValue))
 	}
 })
+
+async function onBeforeRequest(details) {
+	if (details.tabId === -1 || details.frameId !== 0) {
+		return {}
+	}
+
+	// Firefox may deliver the same request again when another blocking listener
+	// redirects it. Keep canceling it without opening duplicate container tabs.
+	if (redirectingTabs.has(details.tabId)) {
+		return { cancel: true }
+	}
+
+	let tab
+	let assignments
+	try {
+		const navigationState = await Promise.all([
+			browser.tabs.get(details.tabId),
+			assignmentsPromise,
+		])
+		tab = navigationState[0]
+		assignments = navigationState[1]
+	} catch (error) {
+		console.debug('Failed to inspect navigation:', error)
+		return {}
+	}
+
+	if (
+		tab.cookieStoreId !== DEFAULT_COOKIE_STORE_ID ||
+		tab.active !== true
+	) {
+		return {}
+	}
+
+	const firstMatch = assignments.find((assignment) => (
+		typeof assignment.pattern === 'string' &&
+		details.url.includes(assignment.pattern)
+	))
+
+	if (!firstMatch || typeof firstMatch.containerName !== 'string') {
+		return {}
+	}
+
+	if (redirectingTabs.has(details.tabId)) {
+		return { cancel: true }
+	}
+	redirectingTabs.add(details.tabId)
+
+	try {
+		const containers = await browser.contextualIdentities.query({
+			name: firstMatch.containerName,
+		})
+		const container = containers[0]
+		const cookieStoreId = container && container.cookieStoreId
+
+		if (!cookieStoreId || typeof cookieStoreId !== 'string') {
+			console.debug(`Not replacing tab. cookieStoreId was '${cookieStoreId}'.`)
+			return {}
+		}
+
+		const createProperties = {
+			url: details.url,
+			cookieStoreId,
+			windowId: tab.windowId,
+			index: tab.index + 1,
+			active: tab.active,
+		}
+
+		// If the original tab is removed, keep its opener instead of pointing the
+		// replacement at a tab that is about to disappear.
+		if (typeof tab.openerTabId === 'number') {
+			createProperties.openerTabId = tab.openerTabId
+		}
+
+		await browser.tabs.create(createProperties)
+
+		try {
+			await browser.tabs.remove(tab.id)
+		} catch (error) {
+			console.debug('Failed to remove replaced tab:', error)
+		}
+
+		return { cancel: true }
+	} catch (error) {
+		// If the replacement cannot be created, allow the original navigation
+		// rather than leaving the user on a canceled request.
+		console.debug('Failed to open URL in container:', error)
+		return {}
+	} finally {
+		redirectingTabs.delete(details.tabId)
+	}
+}
+
+browser.webRequest.onBeforeRequest.addListener(
+	onBeforeRequest,
+	{ urls: ['<all_urls>'], types: ['main_frame'] },
+	['blocking'],
+)

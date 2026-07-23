@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "Open URLs in Container",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "Open any URL (not just those with a specific domain) in a multi-account container",
 	"developer": {
 		"name": "ergolyam",
@@ -9,10 +9,13 @@
 	},
 	"default_locale": "en",
 	"permissions": [
+		"<all_urls>",
 		"tabs",
 		"contextualIdentities",
 		"cookies",
-		"storage"
+		"storage",
+		"webRequest",
+		"webRequestBlocking"
 	],
 	"background": {
 		"scripts": [
