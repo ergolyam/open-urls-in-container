@@ -8,3 +8,5 @@ node_modules
 # Build output
 build
 web-ext-artifacts
+
+*.tar*
