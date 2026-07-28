@@ -124,10 +124,13 @@ export default {
 			if (trimmed.length > 0) {
 				return trimmed
 			}
-			return this.currentTabUrl
+			return this.automaticPattern
+		},
+		automaticPattern() {
+			return this.currentTabUrl.replace(/^https?:\/\//, '')
 		},
 		newPatternPlaceholder() {
-			return this.currentTabUrl || 'https://example.com'
+			return this.automaticPattern || 'example.com'
 		},
 		canAddAssignment() {
 			return this.selectedContainerName.length > 0 && this.effectivePattern.length > 0
