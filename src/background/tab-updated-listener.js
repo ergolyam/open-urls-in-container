@@ -127,11 +127,12 @@ async function removeTabQuietly(tabId, errorMessage) {
 	}
 }
 
+function isGrouped(groupId) {
+	return typeof groupId === 'number' && groupId >= 0
+}
+
 async function preserveTabGroup(tabId, groupId) {
-	if (
-		typeof groupId !== 'number' ||
-		groupId < 0
-	) {
+	if (!isGrouped(groupId)) {
 		return
 	}
 
@@ -158,10 +159,12 @@ async function replaceTabInBackground(
 	} catch (error) {
 		console.debug('Failed to open URL in container:', error)
 	} finally {
-		await removeTabQuietly(
-			replacedTabId,
-			'Failed to remove replaced tab:',
-		)
+		if (isGrouped(groupId)) {
+			await removeTabQuietly(
+				replacedTabId,
+				'Failed to remove replaced tab:',
+			)
+		}
 	}
 }
 
@@ -244,6 +247,9 @@ async function redirectNavigation(details, navigation) {
 		rememberCanceledNavigation(navigation)
 
 		replaceTabInBackground(createProperties, tab.groupId, tab.id)
+		if (!isGrouped(tab.groupId)) {
+			removeTabQuietly(tab.id, 'Failed to remove replaced tab:')
+		}
 
 		return { cancel: true }
 	} catch (error) {
