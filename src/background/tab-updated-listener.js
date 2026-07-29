@@ -147,6 +147,24 @@ async function preserveTabGroup(tabId, groupId) {
 	}
 }
 
+async function replaceTabInBackground(
+	createProperties,
+	groupId,
+	replacedTabId,
+) {
+	try {
+		const createdTab = await browser.tabs.create(createProperties)
+		await preserveTabGroup(createdTab.id, groupId)
+	} catch (error) {
+		console.debug('Failed to open URL in container:', error)
+	} finally {
+		await removeTabQuietly(
+			replacedTabId,
+			'Failed to remove replaced tab:',
+		)
+	}
+}
+
 async function redirectNavigation(details, navigation) {
 	let assignments
 	try {
@@ -223,41 +241,14 @@ async function redirectNavigation(details, navigation) {
 			createProperties.openerTabId = tab.openerTabId
 		}
 
-		const createdTab = await browser.tabs.create(createProperties)
-
-		if (!isCurrentNavigation(navigation)) {
-			await removeTabQuietly(
-				createdTab.id,
-				'Failed to remove superseded container tab:',
-			)
-			return {}
-		}
-
-		// A replacement created at the boundary of a Firefox tab group can be
-		// placed outside it. Move it explicitly before removing the original,
-		// which may be the group's last remaining tab.
-		await preserveTabGroup(createdTab.id, tab.groupId)
-
-		if (!isCurrentNavigation(navigation)) {
-			await removeTabQuietly(
-				createdTab.id,
-				'Failed to remove superseded container tab:',
-			)
-			return {}
-		}
-
 		rememberCanceledNavigation(navigation)
 
-		// Start removing the original tab before unblocking the request. The
-		// helper handles its own rejection, while the canceled-request registry
-		// continues guarding against late duplicate callbacks.
-		removeTabQuietly(tab.id, 'Failed to remove replaced tab:')
+		replaceTabInBackground(createProperties, tab.groupId, tab.id)
 
 		return { cancel: true }
 	} catch (error) {
-		// If the replacement cannot be created, allow the original navigation
-		// rather than leaving the user on a canceled request.
-		console.debug('Failed to open URL in container:', error)
+		// Allow the original navigation when the redirect cannot be prepared.
+		console.debug('Failed to prepare container redirect:', error)
 		return {}
 	}
 }
