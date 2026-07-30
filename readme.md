@@ -1,7 +1,7 @@
 # open-urls-in-container
 > This project is a fork of this repository: [open-urls-in-container](https://gitlab.com/hughblackall/open-urls-in-container)
 
-Firefox's Multi-Account Containers extension provides functionality to open certain websites in specific containers out of the box, but only allows for matching URLs based on a domain. This extension allows for regex matching against the whole URL as opposed to exact matches based on domain.
+Firefox's Multi-Account Containers extension provides functionality to open certain websites in specific containers out of the box, but only allows for matching URLs based on a domain. This extension matches plain-text patterns against the requested URL, including its path and query string. Patterns are treated as literal substrings, not regular expressions.
 
 ## Installation
 
